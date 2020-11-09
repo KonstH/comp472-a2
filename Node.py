@@ -1,3 +1,6 @@
+import numpy as np
+import copy 
+
 class Node:
   def __init__(self, state, parent, cost, max_row, max_col):
     self.state = state
@@ -126,8 +129,8 @@ class Node:
   def diag_upright(self, emptyTile):
     (row, col) = emptyTile
     
-    if(row - 1 >=0 and col + 1 <= self.max_col):
-      targetTile = (row+1, col-1)
+    if(row - 1 >= 0 and col + 1 <= self.max_col):
+      targetTile = (row-1, col+1)
       self.swap_and_add_child(emptyTile, targetTile, 3)
 
   def diag_opposite(self, emptyTile, cornerPos):
@@ -142,19 +145,19 @@ class Node:
     self.swap_and_add_child(emptyTile, targetTile, 3)
 
   def swap_and_add_child(self, emptyTile, targetTile, move_cost):
-    new_state = self.state.copy()
+    new_state = copy.deepcopy(self.state)
     t_row, t_col = targetTile
     e_row, e_col = emptyTile
-    value_target = self.state[t_row][t_col]
+    value_target = new_state[t_row][t_col]
     new_state[e_row][e_col] = value_target
     new_state[t_row][t_col] = 0
     child = Node(new_state, self, move_cost, self.max_row, self.max_col)
     self.successors.append(child)
 
   def isGoal(self, state):
-    goal1 = [['1','2','3','4'],['5','6','7','0']]
-    goal2 = [['1','3','5','7'],['2','4','6','0']]
-
+    goal1 = [[1,2,3,4],[5,6,7,0]]
+    goal2 = [[1,3,5,7],[2,4,6,0]]
+    
     if(state == goal1 or state == goal2):
       return True
     return False

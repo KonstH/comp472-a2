@@ -1,9 +1,9 @@
-import numpy as np
 from time import perf_counter
 from UCS import ucs
 from Node import Node
 
-puzzle = [[1,3,5,7],[2,4,6,0]]
+puzzle = [[2,0,3,1],[5,6,7,4]]  # Simple puzzle for algorithm validation
+
 max_row = len(puzzle) - 1
 max_col = len(puzzle[1]) - 1
 

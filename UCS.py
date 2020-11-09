@@ -1,20 +1,19 @@
-from queue import PriorityQueue
+from PriorityQueue import PQ
 import numpy as np
 
 def ucs(rootNode):
-  open_list = PriorityQueue()
+  open_list = PQ()
   closed_list = set()   # set makes sure there's no duplicates
-  open_list.put((0, rootNode))  # Add initial node and total cost of 0
+  open_list.insert(0, rootNode)  # Add initial node and total cost of 0
 
-  while(open_list):
-    currCost, node = open_list.get()
+  while(open_list.notEmpty()):
+    currCost, node = open_list.pop()
 
     # if node has not been visited yet, go for it
     if node not in closed_list:
       closed_list.add(node)   # node is visited for the first time, add to closed list
-
       if (node.isGoal(node.state)):
-        return print(np.matrix(node.state), currCost)
+        return print(np.matrix(node.state), currCost)   # print final state and cost for now. TODO: implement traceback function
       else:
         node.generateSuccessors()
         successors = node.successors
@@ -22,5 +21,5 @@ def ucs(rootNode):
         for successor in successors:
           if successor not in closed_list:
             new_cost = currCost + successor.cost
-            open_list.put((new_cost, successor))
+            open_list.insert(new_cost, successor)
             
