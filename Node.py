@@ -2,10 +2,11 @@ import numpy as np
 import copy 
 
 class Node:
-  def __init__(self, state, parent, cost, max_row, max_col):
+  def __init__(self, state, parent, tileMoved, cost, max_row, max_col):
     self.state = state
     self.parent = parent
     self.successors = []
+    self.tileMoved = tileMoved
     self.cost = cost
     self.max_row = max_row
     self.max_col = max_col
@@ -151,7 +152,7 @@ class Node:
     value_target = new_state[t_row][t_col]
     new_state[e_row][e_col] = value_target
     new_state[t_row][t_col] = 0
-    child = Node(new_state, self, move_cost, self.max_row, self.max_col)
+    child = Node(new_state, self, value_target, move_cost, self.max_row, self.max_col)
     self.successors.append(child)
 
   def isGoal(self, state):
@@ -162,12 +163,14 @@ class Node:
       return True
     return False
 
-  def traceSolution(self, path):
+  def traceSolution(self, moves, costs, path):
+    moves.append(self.tileMoved)
+    costs.append(self.cost)
     path.append(self.state)
     if self.parent == None:
-      return path
+      return (moves, costs, path)
     else:
-      return self.parent.traceSolution(path)
+      return self.parent.traceSolution(moves, costs, path)
 
   # # Applies heuristic to node
   # def apply_heuristic(self, h):
