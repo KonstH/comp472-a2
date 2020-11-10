@@ -31,32 +31,46 @@ def solve(puzzle, puzzleCount):
   print(np.matrix(puzzle))
   print('\nFinding solution with Uniform Cost Search....\n')
 
-  moves, costs, path, total_cost, end_time, timedOut = ucs(rootNode, 60)
+  timeout = 60  # Maximum time the algorithm should run for
+  moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = ucs(rootNode, timeout)
 
-  file_name = str(puzzleCount) + '_ucs_solution.txt'
-  f = open(file_name,'w')
+  sol_fname = str(puzzleCount) + '_ucs_solution.txt'
+  srch_fname = str(puzzleCount) + '_ucs_search.txt'
+  sol_f = open(sol_fname,'w')
+  srch_f = open(srch_fname,'w')
 
   if(timedOut):
-    print('Timed Out!\n')
-    f.write('no solution')
+    print('Search exceeded {} seconds! Execution halted.\n'.format(timeout))
+    sol_f.write('no solution')
+    srch_f.write('no solution')
     return
   else:
     moves.reverse()    # Show solution moves in correct order
     costs.reverse()    # Show solution moves in correct order
-    path.reverse()    # Show solution moves in correct order
+    sol_path.reverse()    # Show solution moves in correct order
     i = 0 
 
-    for state in path:
-      f.write(str(moves[i]) + ' ')  # Write the tile moved
-      f.write(str(costs[i]) + ' ')  # Write how much the move cost
-      f.write((' '.join(str(tile) for tile in state)).replace('[', '').replace(']', '').replace(', ', ' '))   # Write the state of the board after the move
-      f.write('\n')
+    # Export solution path to solution file
+    for state in sol_path:
+      sol_f.write(str(moves[i]) + ' ')  # Write the tile moved
+      sol_f.write(str(costs[i]) + ' ')  # Write how much the move cost
+      sol_f.write((' '.join(str(tile) for tile in state)).replace('[', '').replace(']', '').replace(', ', ' '))   # Write the state of the board after the move
+      sol_f.write('\n')
       i += 1
-
-    f.write(str(total_cost) + ' ')  # Write total cost
-    f.write(str(round(end_time, 1)))  # Write total computation time
     
-    print("Solution exported to " + file_name + "!\n")
+    # Export search path to search file
+    for node in srch_path:
+      srch_f.write('0 0 0 ')  # Write f(n), g(n), h(n) as 0 for the UCS algorithm
+      srch_f.write(str(node).replace('[', '').replace(']', '').replace(', ', ' '))
+      srch_f.write('\n')
+
+    sol_f.write(str(total_cost) + ' ')  # Write total cost
+    sol_f.write(str(round(end_time, 1)))  # Write total computation time
+    
+    print('Solution exported to ' + sol_fname + '!')
+    print('Search path exported to ' + srch_fname + '!\n')
+    sol_f.close()
+    srch_f.close()
   
 
 # Solves each puzzle and outputs results/metrics in text file
