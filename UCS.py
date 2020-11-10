@@ -4,7 +4,7 @@ from time import perf_counter
 
 def ucs(rootNode, timeout):
   open_list = PQ()
-  closed_list = []   # set makes sure there's no duplicates
+  closed_list = []  # keeps track of search path
   open_list.insert(0, rootNode)  # Add initial node and total cost of 0
   start_time = perf_counter()
   timedOut = False
