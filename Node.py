@@ -162,6 +162,13 @@ class Node:
       return True
     return False
 
+  def traceSolution(self, path):
+    path.append(self.state)
+    if self.parent == None:
+      return path
+    else:
+      return self.parent.traceSolution(path)
+
   # # Applies heuristic to node
   # def apply_heuristic(self, h):
   #   if h == 'h0':

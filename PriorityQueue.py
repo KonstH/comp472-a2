@@ -9,25 +9,20 @@ class PQ():
   # insert element into queue, handles special cases where elements have same priority or same node with diff priorities
   # TODO: Re-write logic to be cleaner
   def insert(self, new_cost, new_node):
-    bool = True
-    if(len(self.queue) == 0):
-      self.queue.append((new_cost, new_node))
-      bool = False
-    else:
+    if(len(self.queue) > 0):
       for i in range(len(self.queue)):
         (old_cost, old_node) = self.queue[i]
         if (new_node == old_node):
           if(new_cost >= old_cost):
-            bool = False
-            break
+            return
           else:
             del self.queue[i]
             self.queue.append((new_cost, new_node))
-            bool = False
-            break
-    if(bool):
+            return
+      self.queue.append((new_cost, new_node))   
+    else:
       self.queue.append((new_cost, new_node))
-
+      
   # remove element with highest priority and return it
   def pop(self): 
     try: 

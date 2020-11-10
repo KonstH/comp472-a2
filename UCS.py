@@ -13,7 +13,7 @@ def ucs(rootNode):
     if node not in closed_list:
       closed_list.add(node)   # node is visited for the first time, add to closed list
       if (node.isGoal(node.state)):
-        return print(np.matrix(node.state), currCost)   # print final state and cost for now. TODO: implement traceback function
+        return (node.traceSolution([]), currCost)   # Returns final solution
       else:
         node.generateSuccessors()
         successors = node.successors
