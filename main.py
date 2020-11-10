@@ -5,21 +5,21 @@ import numpy as np
 
 # Reads input file and stores puzzles in a list
 # Currently hardcoded to only accept 4x2 puzzles
-with open('test.txt') as f:
-    puzzles = []
-    for line in f:
-      line = line.split()
-      puzzle = [[],[]]
-      count = 0
-      if line:
-        for i in line:
-          num = int(i)
-          if count < 4:
-            puzzle[0].append(num)
-          else:
-            puzzle[1].append(num)
-          count += 1
-        puzzles.append(puzzle)
+with open('input.txt') as f:
+  puzzles = []
+  for line in f:
+    line = line.split()
+    puzzle = [[],[]]
+    count = 0
+    if line:
+      for i in line:
+        num = int(i)
+        if count < 4:
+          puzzle[0].append(num)
+        else:
+          puzzle[1].append(num)
+        count += 1
+      puzzles.append(puzzle)
 
 
 def solve(puzzle, puzzleCount):

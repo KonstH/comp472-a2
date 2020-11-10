@@ -1,3 +1,5 @@
+from Node import Node
+
 class PQ(): 
   def __init__(self): 
     self.queue = []
@@ -12,7 +14,7 @@ class PQ():
     if(len(self.queue) > 0):
       for i in range(len(self.queue)):
         (old_cost, old_node) = self.queue[i]
-        if (new_node == old_node):
+        if (new_node.equal(old_node)):
           if(new_cost >= old_cost):
             return
           else:
