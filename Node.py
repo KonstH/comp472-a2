@@ -178,25 +178,44 @@ class Node:
     else:
       return self.parent.traceSolution(moves, costs, path)
 
-  # # Applies heuristic to node
-  # def apply_heuristic(self, h):
-  #   if h == 'h0':
-  #     return self.h0()
-  #   elif h == 'h1':
-  #     return self.h1()
-  #   elif h == 'h2':
-  #     return self.h2()
-  #   else:
-  #     print('invalid heuristic')
+  # Applies heuristic to node
+  def h(self, heur):
+    if heur == 'h0':
+      return self.h0()
+    elif heur == 'h1':
+      return self.h1()
+    elif heur == 'h2':
+      return self.h2()
+    else:
+      print('invalid heuristic')
 
-  # # Heuristic 0 logic
-  # def h0(self):
-  #   return 0
+  # Heuristic 0 logic
+  def h0(self):
+    goal = [[1,2,3,4],[5,6,7,0]]
 
-  # # Heuristic 1 logic
-  # def h1(self):
-  #   return 0
+    if (self.state == goal):
+      return 0
+    return 1
 
-  # # Heuristic 2 logic
-  # def h2(self):
-  #   return 0
+  # Heuristic 1 logic (hamming distance)
+  def h1(self):
+    goal1 = [[1,2,3,4],[5,6,7,0]]
+    goal2 = [[1,3,5,7],[2,4,6,0]]
+
+    goal1_hd = 0
+    goal2_hd = 0
+
+    for row in range(self.max_row + 1):
+      for col in range(self.max_col + 1):
+        if self.state[row][col] != goal1[row][col]:
+          goal1_hd += 1
+        if self.state[row][col] != goal2[row][col]:
+          goal2_hd += 1
+    
+    if (goal1_hd < goal2_hd):
+      return goal1_hd
+    return goal2_hd
+
+  # Heuristic 2 logic
+  def h2(self):
+    return 0

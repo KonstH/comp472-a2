@@ -1,5 +1,6 @@
 from time import perf_counter
 from UCS import ucs
+from GBFS import gbfs
 from Node import Node
 import numpy as np
 
@@ -22,20 +23,30 @@ with open('input.txt') as f:
       puzzles.append(puzzle)
 
 
-def solve(puzzle, puzzleCount):
+def solve(puzzle, puzzleCount, algo, heur):
   max_row = len(puzzle) - 1
   max_col = len(puzzle[1]) - 1
   rootNode = Node(puzzle, None, 0, 0, max_row, max_col)
 
   print('\nPuzzle to solve:\n')
   print(np.matrix(puzzle))
-  print('\nFinding solution with Uniform Cost Search....\n')
 
   timeout = 60  # Maximum time the algorithm should run for
-  moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = ucs(rootNode, timeout)
+  if(algo == 'UCS'):
+    print('\nFinding solution with Uniform Cost Search....\n')
+    moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = ucs(rootNode, timeout)
+    sol_fname = str(puzzleCount) + '_ucs_solution.txt'
+    srch_fname = str(puzzleCount) + '_ucs_search.txt'
 
-  sol_fname = str(puzzleCount) + '_ucs_solution.txt'
-  srch_fname = str(puzzleCount) + '_ucs_search.txt'
+  elif(algo == 'GBFS'):
+    if (heur != 'h0' and heur != 'h1' and heur != 'h2'):
+      print('Please provide a valid heuristic!\nYour choices are: h0, h1 or h2')
+      return
+    print('\nFinding solution with Greedy Best First Search....\n')
+    moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = gbfs(rootNode, heur, timeout)
+    sol_fname = str(puzzleCount) + '_gbfs_solution.txt'
+    srch_fname = str(puzzleCount) + '_gbfs_search.txt'
+
   sol_f = open(sol_fname,'w')
   srch_f = open(srch_fname,'w')
 
@@ -76,5 +87,5 @@ def solve(puzzle, puzzleCount):
 # Solves each puzzle and outputs results/metrics in text file
 puzzleCount = 0
 for puzzle in puzzles:
-  solve(puzzle, puzzleCount)
+  solve(puzzle, puzzleCount, 'GBFS', 'h1')
   puzzleCount += 1
