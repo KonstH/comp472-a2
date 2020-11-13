@@ -11,9 +11,11 @@ def ucs(rootNode, timeout):
 
   while(open_list.notEmpty()):
     elapsed_time = perf_counter()
+    
     if ((elapsed_time - start_time) >= timeout):
       timedOut = True
       return (None, None, None, None, None, None, timedOut)
+
     else:
       totalCost, node = open_list.pop()
 

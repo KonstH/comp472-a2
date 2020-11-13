@@ -1,4 +1,3 @@
-import numpy as np
 import copy 
 
 class Node:
@@ -17,9 +16,9 @@ class Node:
   
   def equal(self, other):
     if self.state == other.state:
-        return True
+      return True
     else:
-        return False
+      return False
 
   def find(self, value):
     for row in range(self.max_row + 1):

@@ -11,9 +11,11 @@ def gbfs(rootNode, heur, timeout):
 
   while(open_list.notEmpty()):
     elapsed_time = perf_counter()
+    
     if ((elapsed_time - start_time) >= timeout):
       timedOut = True
       return (None, None, None, None, None, None, timedOut)
+
     else:
       _ , node = open_list.pop() # we don't care about the heuristic value returned
 
