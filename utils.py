@@ -33,7 +33,7 @@ def getPuzzles(file_name):
 Function which writes all the search/solution paths to appropriate files.
 Also creates directories for them, to keep things neat and readable.
 """
-def writeResults(sol_file_name, srch_file_name, search_results, timeout):
+def writeResults(sol_file_name, srch_file_name, search_results, timeout, algo):
   moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = search_results  # unpacks results
 
   solutions_dir = curr_dir + '/solution_files/'
@@ -70,10 +70,20 @@ def writeResults(sol_file_name, srch_file_name, search_results, timeout):
       i += 1
     
     # Export search path to search file
-    for node in srch_path:
-      srch_f.write('0 0 0 ')  # Write f(n), g(n), h(n) as 0 for the UCS algorithm
-      srch_f.write(str(node).replace('[', '').replace(']', '').replace(', ', ' '))
-      srch_f.write('\n')
+    if(algo == 'UCS'):
+      for node in srch_path:
+        srch_f.write('0 ')  # Write f(n) as 0
+        srch_f.write(str(node.gn))  # Write g(n)
+        srch_f.write(' 0 ')  # Write h(n) as 0
+        srch_f.write(str(node.state).replace('[', '').replace(']', '').replace(', ', ' '))
+        srch_f.write('\n')
+
+    elif(algo == 'GBFS'):
+      for node in srch_path:
+        srch_f.write('0 0 ')  # Write f(n) and g(n) as 0
+        srch_f.write(str(node.hn) + ' ')  # Write h(n)
+        srch_f.write(str(node.state).replace('[', '').replace(']', '').replace(', ', ' '))
+        srch_f.write('\n')
 
     sol_f.write(str(total_cost) + ' ')  # Write total cost
     sol_f.write(str(round(end_time, 1)))  # Write total computation time

@@ -10,6 +10,9 @@ class Node:
     self.successors = []
     self.tileMoved = tileMoved
     self.cost = cost
+    self.fn = 0
+    self.gn = 0
+    self.hn = 0
     self.max_row = max_row
     self.max_col = max_col
     self.emptyPos = self.find(0)
@@ -190,9 +193,7 @@ class Node:
 
   # Heuristic 0 logic
   def h0(self):
-    goal = [[1,2,3,4],[5,6,7,0]]
-
-    if (self.state == goal):
+    if (self.state == Node.goal1):
       return 0
     return 1
 
@@ -207,10 +208,8 @@ class Node:
           goal1_hd += 1
         if self.state[row][col] != Node.goal2[row][col]:
           goal2_hd += 1
-    
-    if (goal1_hd < goal2_hd):
-      return goal1_hd
-    return goal2_hd
+          
+    return min(goal1_hd, goal2_hd)
 
   # Heuristic 2 logic
   def h2(self):
