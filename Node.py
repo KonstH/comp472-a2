@@ -2,6 +2,9 @@ import numpy as np
 import copy 
 
 class Node:
+  goal1 = [[1,2,3,4],[5,6,7,0]]
+  goal2 = [[1,3,5,7],[2,4,6,0]]
+
   def __init__(self, state, parent, tileMoved, cost, max_row, max_col):
     self.state = state
     self.parent = parent
@@ -162,10 +165,7 @@ class Node:
     self.successors.append(child)
 
   def isGoal(self, state):
-    goal1 = [[1,2,3,4],[5,6,7,0]]
-    goal2 = [[1,3,5,7],[2,4,6,0]]
-    
-    if(state == goal1 or state == goal2):
+    if(state == Node.goal1 or state == Node.goal2):
       return True
     return False
 
@@ -199,17 +199,14 @@ class Node:
 
   # Heuristic 1 logic (hamming distance)
   def h1(self):
-    goal1 = [[1,2,3,4],[5,6,7,0]]
-    goal2 = [[1,3,5,7],[2,4,6,0]]
-
     goal1_hd = 0
     goal2_hd = 0
 
     for row in range(self.max_row + 1):
       for col in range(self.max_col + 1):
-        if self.state[row][col] != goal1[row][col]:
+        if self.state[row][col] != Node.goal1[row][col]:
           goal1_hd += 1
-        if self.state[row][col] != goal2[row][col]:
+        if self.state[row][col] != Node.goal2[row][col]:
           goal2_hd += 1
     
     if (goal1_hd < goal2_hd):
