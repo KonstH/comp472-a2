@@ -4,7 +4,7 @@ This file contains helper functions used in the main file
 """
 import os
 import random
-curr_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))) # Store current directory path
+curr_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))     # Store current directory path
 
 
 """
@@ -34,7 +34,7 @@ Function which writes all the search/solution paths to appropriate files.
 Also creates directories for them, to keep things neat and readable.
 """
 def writeResults(sol_file_name, srch_file_name, search_results, timeout, algo):
-  moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = search_results  # unpacks results
+  moves, costs, sol_path, srch_path, total_cost, end_time, timedOut = search_results    # unpacks results
 
   solutions_dir = curr_dir + '/solution_files/'
   search_dir = curr_dir + '/search_files/'
@@ -44,7 +44,7 @@ def writeResults(sol_file_name, srch_file_name, search_results, timeout, algo):
     os.mkdir(solutions_dir)
     os.mkdir(search_dir)
   except OSError:
-    pass  # folder already exists, ignore warning
+    pass   # folder already exists, ignore warning
   
   # Open files for writing
   sol_f = open(solutions_dir + sol_file_name, 'w')
@@ -118,4 +118,4 @@ def generate50Puzzles():
   puzzles_file = open('50puzzles.txt', 'w')
 
   for puzzle in puzzles:
-    puzzles_file.write(str(puzzle).replace('[', '').replace(']', '').replace(', ', ' ') + '\n')  # Write the tile moved
+    puzzles_file.write(str(puzzle).replace('[', '').replace(']', '').replace(', ', ' ') + '\n')    # formatting
