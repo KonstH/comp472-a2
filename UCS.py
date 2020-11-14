@@ -3,10 +3,10 @@ from time import perf_counter
 
 def ucs(rootNode, timeout):
   open_list = PQ()
-  closed_list = []  # keeps track of search path
+  closed_list = []
   search_path = []
-  open_list.insert(0, rootNode)  # Add initial node and total cost of 0
-  start_time = perf_counter()
+  open_list.insert(0, rootNode)  # Add initial node with g(n) of 0
+  start_time = perf_counter()    # Start the timer
   timedOut = False
 
   while(open_list.notEmpty()):
@@ -18,7 +18,7 @@ def ucs(rootNode, timeout):
       return (None, None, None, None, None, None, timedOut)
 
     else:
-      currCost, node = open_list.pop()
+      currCost, node = open_list.pop()   # get node and its g(n)
 
       # if node has not been visited yet, process it
       if node.state not in closed_list:
@@ -30,9 +30,9 @@ def ucs(rootNode, timeout):
           moves, costs, sol_path = node.traceSolution([],[],[])
           totalCost = sum(costs)
           end_time = (elapsed_time - start_time)
-          return (moves, costs, sol_path, search_path, totalCost, end_time, timedOut)   # Returns final solution
+          return (moves, costs, sol_path, search_path, totalCost, end_time, timedOut)   # Return final values
 
-        # goal not achieved yet, generate next nodes and keep going
+        # goal not achieved yet, generate next nodes and keep evaluating
         else:
           node.generateSuccessors()
           successors = node.successors
@@ -41,4 +41,3 @@ def ucs(rootNode, timeout):
             if successor not in closed_list:
               successor.gn = currCost + successor.cost
               open_list.insert(successor.gn, successor)
-            

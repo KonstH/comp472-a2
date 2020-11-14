@@ -7,7 +7,7 @@ def gbfs(rootNode, heur, timeout):
   search_path = []
   rootNode.hn = rootNode.h(heur)
   open_list.insert(rootNode.hn, rootNode)  # Add initial node
-  start_time = perf_counter()
+  start_time = perf_counter()   # Start the timer
   timedOut = False
 
   while(open_list.notEmpty()):
@@ -19,7 +19,7 @@ def gbfs(rootNode, heur, timeout):
       return (None, None, None, None, None, None, timedOut)
 
     else:
-      node = open_list.pop()[1]  # we don't care about the heuristic value returned
+      node = open_list.pop()[1]  # We don't care about the heuristic value returned
 
       # if node has not been visited yet, process it
       if node.state not in closed_list:
@@ -31,9 +31,9 @@ def gbfs(rootNode, heur, timeout):
           moves, costs, sol_path = node.traceSolution([],[],[])
           totalCost = sum(costs)
           end_time = (elapsed_time - start_time)
-          return (moves, costs, sol_path, search_path, totalCost, end_time, timedOut)   # Returns final solution
+          return (moves, costs, sol_path, search_path, totalCost, end_time, timedOut)   # Return final values
 
-        # goal not achieved yet, generate next nodes and keep going
+        # goal not achieved yet, generate next nodes and keep evaluating
         else:
           node.generateSuccessors()
           successors = node.successors
@@ -42,4 +42,3 @@ def gbfs(rootNode, heur, timeout):
             if successor not in closed_list:
               successor.hn = successor.h(heur)
               open_list.insert(successor.hn, successor)
-            

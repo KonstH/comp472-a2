@@ -84,6 +84,14 @@ def writeResults(sol_file_name, srch_file_name, search_results, timeout, algo):
         srch_f.write(str(node.hn) + ' ')  # Write h(n)
         srch_f.write(str(node.state).replace('[', '').replace(']', '').replace(', ', ' '))
         srch_f.write('\n')
+    
+    elif(algo == 'A*'):
+      for node in srch_path:
+        srch_f.write(str(node.fn) + ' ')  # Write f(n)
+        srch_f.write(str(node.gn) + ' ')  # Write g(n)
+        srch_f.write(str(node.hn) + ' ')  # Write h(n)
+        srch_f.write(str(node.state).replace('[', '').replace(']', '').replace(', ', ' '))
+        srch_f.write('\n')
 
     sol_f.write(str(total_cost) + ' ')  # Write total cost
     sol_f.write(str(round(end_time, 1)))  # Write total computation time
