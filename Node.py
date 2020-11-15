@@ -16,12 +16,6 @@ class Node:
     self.max_row = max_row
     self.max_col = max_col
     self.emptyPos = self.find(0)
-  
-  def equal(self, other):
-    if self.state == other.state:
-      return True
-    else:
-      return False
 
   def find(self, value):
     for row in range(self.max_row + 1):

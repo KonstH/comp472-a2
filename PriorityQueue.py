@@ -10,8 +10,8 @@ class PQ():
   def insert(self, new_priority, new_node):
     if(len(self.queue) > 0):
       for i in range(len(self.queue)):
-        (old_priority, old_node) = self.queue[i]
-        if (new_node.equal(old_node)):
+        old_priority, old_node = self.queue[i]
+        if (new_node.state == old_node.state):
           if(new_priority >= old_priority):
             return
           else:
@@ -27,8 +27,8 @@ class PQ():
     try: 
       min = 0
       for i in range(len(self.queue)):
-        new, _ = self.queue[i]
-        old, _ = self.queue[min]
+        new = self.queue[i][0]
+        old = self.queue[min][0]
         if new < old:
           min = i
       item = self.queue[min] 

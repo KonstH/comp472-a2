@@ -1,4 +1,3 @@
-
 """
 This file contains helper functions used in the main file
 """
@@ -28,6 +27,7 @@ def getPuzzles(file_name):
           count += 1
         puzzles.append(puzzle)
     return puzzles
+
 
 """
 Function which writes all the search/solution paths to appropriate files.
@@ -119,3 +119,14 @@ def generate50Puzzles():
 
   for puzzle in puzzles:
     puzzles_file.write(str(puzzle).replace('[', '').replace(']', '').replace(', ', ' ') + '\n')    # formatting
+
+
+"""
+Function which returns the index of the node in the closed list, or -1 if not found
+"""
+def index(item, lst):
+  states = [x.state for x in lst]
+  try:
+    return states.index(item)
+  except:
+    return -1

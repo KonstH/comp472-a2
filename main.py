@@ -2,10 +2,13 @@ from UCS import ucs
 from GBFS import gbfs
 from Astar import aStar
 from Node import Node
-from utils import getPuzzles, writeResults, generate50Puzzles
+from utils import getPuzzles, writeResults
 import numpy as np
 
-def solve(puzzle, puzzleCount, algo, heur):
+"""
+Function which solves the given puzzles using the provided algorithm and heuristic
+"""
+def solve(puzzle, puzzleCount, algo, heur, timeout):
   max_row = len(puzzle) - 1
   max_col = len(puzzle[1]) - 1
   rootNode = Node(puzzle, None, 0, 0, max_row, max_col)
@@ -13,7 +16,6 @@ def solve(puzzle, puzzleCount, algo, heur):
   print('\nPuzzle to solve:\n')
   print(np.matrix(puzzle))
 
-  timeout = 60  # Maximum time the algorithm should run for
   if(algo == 'UCS'):
     print('\nFinding solution with Uniform Cost Search....\n')
     search_outputs = ucs(rootNode, timeout)
@@ -56,5 +58,5 @@ puzzleCount = 0
 #
 # Note: If UCS is chosen, any heuristic value is accepted, as it's not required by the algorithm
 for puzzle in puzzles:
-  solve(puzzle, puzzleCount, 'A*', 'h1')
+  solve(puzzle, puzzleCount, 'A*', 'h1', 60)
   puzzleCount += 1
