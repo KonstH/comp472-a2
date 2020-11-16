@@ -1,4 +1,5 @@
 import copy 
+from utils import find
 
 class Node:
   goal1 = [[1,2,3,4],[5,6,7,0]]
@@ -15,13 +16,7 @@ class Node:
     self.hn = 0
     self.max_row = max_row
     self.max_col = max_col
-    self.emptyPos = self.find(0)
-
-  def find(self, value):
-    for row in range(self.max_row + 1):
-      for col in range(self.max_col + 1):
-        if self.state[row][col] == value:
-          return (row, col)
+    self.emptyPos = find(self.state, 0)
   
   def isCorner(self, coord):
     (row, col) = coord
@@ -191,8 +186,29 @@ class Node:
       return 0
     return 1
 
-  # Heuristic 1 logic (hamming distance)
+  # Heuristic 1 logic (enhanced manhattan distance)
   def h1(self):
+    deductions = 0
+    if(self.isCorner(self.emptyPos)):
+      deductions += 1
+    if(self.state[0][0] == 1):
+      deductions += 1
+
+    d1 = 0
+    d2 = 0
+
+    for i in range(8):
+      row_targ, col_targ = find(self.state, i)
+      row_g1, col_g1 = find(Node.goal1, i)
+      row_g2, col_g2 = find(Node.goal2, i)
+      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
+      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2)) 
+
+    return min(d1, d2) - deductions
+
+  # Heuristic 2 logic (hamming distance + manhattan distance) (not so good)
+  def h2(self):
+    # Perform hamming distance
     goal1_hd = 0
     goal2_hd = 0
 
@@ -203,8 +219,19 @@ class Node:
         if self.state[row][col] != Node.goal2[row][col]:
           goal2_hd += 1
           
-    return min(goal1_hd, goal2_hd)
+    hd = min(goal1_hd, goal2_hd)  # save HD result
 
-  # Heuristic 2 logic
-  def h2(self):
-    return 0
+    # Perform manhattan distance
+    d1 = 0
+    d2 = 0
+
+    for i in range(8):
+      row_targ, col_targ = find(self.state, i)
+      row_g1, col_g1 = find(Node.goal1, i)
+      row_g2, col_g2 = find(Node.goal2, i)
+      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
+      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2))
+    
+    md = min(d1, d2)
+
+    return hd + md

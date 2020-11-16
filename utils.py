@@ -130,3 +130,12 @@ def index(item, lst):
     return states.index(item)
   except:
     return -1
+
+"""
+Function which returns the index of the specified value in a given list
+"""
+def find(arr, value):
+  for row in range(2):
+    for col in range(4):
+      if arr[row][col] == value:
+        return (row, col)
