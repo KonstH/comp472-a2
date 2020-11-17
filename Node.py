@@ -1,5 +1,5 @@
 import copy
-from utils import find
+from utils import find, getLowestCost
 
 class Node:
   goal1 = [[1,2,3,4],[5,6,7,0]]
@@ -186,37 +186,35 @@ class Node:
       return 0
     return 1
 
-  # Heuristic 1 logic (manhattan distance)
+  # Heuristic 1 logic (hamming distance, although it seems like it is not admissible for this puzzle)
   def h1(self):
-    d1 = 0
-    d2 = 0
+    goal1_hd = 0
+    goal2_hd = 0
 
-    for i in range(8):
-      row_targ, col_targ = find(self.state, i)
-      row_g1, col_g1 = find(Node.goal1, i)
-      row_g2, col_g2 = find(Node.goal2, i)
-      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
-      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2)) 
+    for row in range(self.max_row + 1):
+      for col in range(self.max_col + 1):
+        if self.state[row][col] != Node.goal1[row][col]:
+          goal1_hd += 1
+        if self.state[row][col] != Node.goal2[row][col]:
+          goal2_hd += 1
 
-    return min(d1, d2)
+    return min(goal1_hd, goal2_hd)
 
 
-  # Heuristic 2 logic (enhanced manhattan distance)
+  # Heuristic 2 logic (custom heuristic, admissible)
   def h2(self):
-    deductions = 0
-    if(self.isCorner(self.emptyPos)):   # emptytile is in a corner, deduct cost point
-      deductions += 1
-    if(self.state[0][0] == 1):    # 1 is present in topleft of the board, deduct cost point
-      deductions += 1
+    goal1_hd = 0
+    goal2_hd = 0
 
-    d1 = 0
-    d2 = 0
+    for row in range(self.max_row + 1):
+      for col in range(self.max_col + 1):
 
-    for i in range(8):
-      row_targ, col_targ = find(self.state, i)
-      row_g1, col_g1 = find(Node.goal1, i)
-      row_g2, col_g2 = find(Node.goal2, i)
-      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
-      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2)) 
+        if self.state[row][col] != Node.goal1[row][col]:
+          goal_r, goal_c = find(Node.goal1, self.state[row][col])
+          goal1_hd += getLowestCost(row, col, goal_r, goal_c)
 
-    return min(d1, d2) - deductions
+        if self.state[row][col] != Node.goal2[row][col]:
+          goal_r, goal_c = find(Node.goal2, self.state[row][col])
+          goal2_hd += getLowestCost(row, col, goal_r, goal_c)
+
+    return min(goal1_hd, goal2_hd)

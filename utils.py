@@ -132,34 +132,29 @@ def getTotalLines():
   sols_total = 0
   search_total = 0
   no_sols = 0
+  cost = 0
+  exec_time = 0
 
   for filename in os.listdir(solutions_dir):
     with open(solutions_dir + filename) as f:
-      sol_found = True
-      for i, l in enumerate(f):
-        if(i == 0 and 'solution' in l):
-          sol_found = False
-          no_sols += 1
-          break
-        else:
-          pass
-      if(sol_found):
-        sols_total += i+1
+      lines = [line.strip("\n") for line in f if line != "\n"]
+      if('solution' in lines[0]):
+        no_sols += 1
+      else:
+        sols_total += (len(lines)-1)
+        metrics = [float(i) for i in lines[len(lines)-1].split()]
+        cost += metrics[0]
+        exec_time += metrics[1]
 
   for filename in os.listdir(search_dir):
     with open(search_dir + filename) as f:
-      sol_found = True
-      for i, l in enumerate(f):
-        if(i == 0):
-          if('solution' in l):
-            sol_found = False
-            break
-        else:
-          pass
-      if(sol_found):
-        search_total += i+1
+      lines = [line.strip("\n") for line in f if line != "\n"]
+      if('solution' in lines[0]):
+        continue
+      else:
+        search_total += len(lines)
   
-  return (search_total, sols_total, no_sols)
+  return (search_total, sols_total, no_sols, cost, exec_time)
 
 """
 Function which deletes the solution and search output directories along with their nested files
@@ -195,3 +190,17 @@ def find(arr, value):
     for col in range(4):
       if arr[row][col] == value:
         return (row, col)
+
+
+"""
+Function which returns the lowest possible cost to move from t_coords to g_coords (in 2x4 puzzle)
+"""
+def getLowestCost(t_row, t_col, g_row, g_col):
+  diff = (abs(t_row - g_row) + abs(t_col - g_col))
+
+  if(diff == 1):
+    return 1
+  elif(diff == 2 or diff == 3):
+    return 2
+  else:
+    return 4
