@@ -131,20 +131,35 @@ def getTotalLines():
   search_dir = curr_dir + '/search_files/'
   sols_total = 0
   search_total = 0
+  no_sols = 0
 
   for filename in os.listdir(solutions_dir):
     with open(solutions_dir + filename) as f:
-      for i, _ in enumerate(f):
-        pass
-      sols_total += i+1
+      sol_found = True
+      for i, l in enumerate(f):
+        if(i == 0 and 'solution' in l):
+          sol_found = False
+          no_sols += 1
+          break
+        else:
+          pass
+      if(sol_found):
+        sols_total += i+1
 
   for filename in os.listdir(search_dir):
     with open(search_dir + filename) as f:
-      for i, _ in enumerate(f):
-        pass
-      search_total += i+1
+      sol_found = True
+      for i, l in enumerate(f):
+        if(i == 0):
+          if('solution' in l):
+            sol_found = False
+            break
+        else:
+          pass
+      if(sol_found):
+        search_total += i+1
   
-  return (search_total, sols_total)
+  return (search_total, sols_total, no_sols)
 
 """
 Function which deletes the solution and search output directories along with their nested files
