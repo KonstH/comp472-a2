@@ -1,4 +1,4 @@
-import copy 
+import copy
 from utils import find
 
 class Node:
@@ -180,18 +180,33 @@ class Node:
     else:
       print('invalid heuristic')
 
-  # Heuristic 0 logic
+  # Heuristic 0 logic (provided in assignment instructions)
   def h0(self):
-    if (self.state == Node.goal1):
+    if (self.state[self.max_row][self.max_col] == 0):
       return 0
     return 1
 
-  # Heuristic 1 logic (enhanced manhattan distance)
+  # Heuristic 1 logic (manhattan distance)
   def h1(self):
+    d1 = 0
+    d2 = 0
+
+    for i in range(8):
+      row_targ, col_targ = find(self.state, i)
+      row_g1, col_g1 = find(Node.goal1, i)
+      row_g2, col_g2 = find(Node.goal2, i)
+      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
+      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2)) 
+
+    return min(d1, d2)
+
+
+  # Heuristic 2 logic (enhanced manhattan distance)
+  def h2(self):
     deductions = 0
-    if(self.isCorner(self.emptyPos)):
+    if(self.isCorner(self.emptyPos)):   # emptytile is in a corner, deduct cost point
       deductions += 1
-    if(self.state[0][0] == 1):
+    if(self.state[0][0] == 1):    # 1 is present in topleft of the board, deduct cost point
       deductions += 1
 
     d1 = 0
@@ -205,33 +220,3 @@ class Node:
       d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2)) 
 
     return min(d1, d2) - deductions
-
-  # Heuristic 2 logic (hamming distance + manhattan distance) (not so good)
-  def h2(self):
-    # Perform hamming distance
-    goal1_hd = 0
-    goal2_hd = 0
-
-    for row in range(self.max_row + 1):
-      for col in range(self.max_col + 1):
-        if self.state[row][col] != Node.goal1[row][col]:
-          goal1_hd += 1
-        if self.state[row][col] != Node.goal2[row][col]:
-          goal2_hd += 1
-          
-    hd = min(goal1_hd, goal2_hd)  # save HD result
-
-    # Perform manhattan distance
-    d1 = 0
-    d2 = 0
-
-    for i in range(8):
-      row_targ, col_targ = find(self.state, i)
-      row_g1, col_g1 = find(Node.goal1, i)
-      row_g2, col_g2 = find(Node.goal2, i)
-      d1 += (abs(row_targ - row_g1) + abs(col_targ - col_g1))      
-      d2 += (abs(row_targ - row_g2) + abs(col_targ - col_g2))
-    
-    md = min(d1, d2)
-
-    return hd + md

@@ -2,8 +2,17 @@ from UCS import ucs
 from GBFS import gbfs
 from Astar import aStar
 from Node import Node
-from utils import getPuzzles, writeResults
+from utils import getPuzzles, writeResults, clearOldOutputs
 import numpy as np
+import argparse
+
+# Sets up the arguments that can be passed in the terminal
+parser = argparse.ArgumentParser(description="Solve the Chi-Puzzle(s) using different algorithms and heuristics")
+parser.add_argument('-f', '--filename', type=str, default='input.txt', metavar='', help="Name of input file (default: input.txt)")
+parser.add_argument('-t', '--timeout', type=int, default=60, metavar='', help="Timeout for algorithms (default: 60)")
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-del', '--delete', action="store_true", help="Delete outputs from previous run (default: False)")
+args = parser.parse_args()
 
 """
 Function which solves the given puzzles using the provided algorithm and heuristic
@@ -47,8 +56,11 @@ def solve(puzzle, puzzleCount, algo, heur, timeout):
   writeResults(sol_fname, srch_fname, search_outputs, timeout, algo)
 
 # Reads input file and stores puzzles in a list (Currently hardcoded to only accept 4x2 puzzles)
-puzzles = getPuzzles('input.txt')
-puzzleCount = 0
+puzzles = getPuzzles(args.filename)
+
+# If -del flag is passed, old output folders and their contents are deleted
+if(args.delete):
+  clearOldOutputs()
 
 # Solves each puzzle and outputs results/metrics in text file.
 # The two last arguments passed to the solve function determine which algorithm and heuristic will be used.
@@ -57,6 +69,9 @@ puzzleCount = 0
 # Heuristic options: h0, h1, h2
 #
 # Note: If UCS is chosen, any heuristic value is accepted, as it's not required by the algorithm
-for puzzle in puzzles:
-  solve(puzzle, puzzleCount, 'A*', 'h1', 60)
-  puzzleCount += 1
+for i, puzzle in enumerate(puzzles):
+  solve(puzzle, i, 'UCS', None, args.timeout)
+  solve(puzzle, i, 'GBFS', 'h1', args.timeout)
+  solve(puzzle, i, 'GBFS', 'h2', args.timeout)
+  solve(puzzle, i, 'A*', 'h1', args.timeout)
+  solve(puzzle, i, 'A*', 'h2', args.timeout)

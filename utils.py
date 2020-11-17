@@ -2,6 +2,7 @@
 This file contains helper functions used in the main file
 """
 import os
+import shutil
 import random
 curr_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))     # Store current directory path
 
@@ -101,6 +102,7 @@ def writeResults(sol_file_name, srch_file_name, search_results, timeout, algo):
     sol_f.close()
     srch_f.close()
 
+
 """
 Function which generates 50 random/unique puzzles and exports them to a file
 """
@@ -122,6 +124,44 @@ def generate50Puzzles():
 
 
 """
+Function which counts the total number of lines in all the files inside of the solution and search output directories
+"""
+def getTotalLines():
+  solutions_dir = curr_dir + '/solution_files/'
+  search_dir = curr_dir + '/search_files/'
+  sols_total = 0
+  search_total = 0
+
+  for filename in os.listdir(solutions_dir):
+    with open(solutions_dir + filename) as f:
+      for i, _ in enumerate(f):
+        pass
+      sols_total += i+1
+
+  for filename in os.listdir(search_dir):
+    with open(search_dir + filename) as f:
+      for i, _ in enumerate(f):
+        pass
+      search_total += i+1
+  
+  return (search_total, sols_total)
+
+"""
+Function which deletes the solution and search output directories along with their nested files
+"""
+def clearOldOutputs():
+  solutions_dir = curr_dir + '/solution_files/'
+  search_dir = curr_dir + '/search_files/'
+
+  # Deletes directories for output files
+  try:
+    shutil.rmtree(solutions_dir)
+    shutil.rmtree(search_dir)
+  except OSError:
+    pass   # ignore any errors
+
+
+"""
 Function which returns the index of the node in the closed list, or -1 if not found
 """
 def index(item, lst):
@@ -130,6 +170,7 @@ def index(item, lst):
     return states.index(item)
   except:
     return -1
+
 
 """
 Function which returns the index of the specified value in a given list
