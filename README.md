@@ -18,8 +18,8 @@ Python modules used/required for this project:
 
 ### Step 2 - Run Program
 - To run all 5 algorithms (`UCS`, `GBFS(h1)`, `GBFS(h2)`, `A*(h1)`, `A*(h2)`) at once, execute `python3 main.py` on your terminal while being in the project directory
-- **IMPORTANT**: Doing this will run the algorithms on the file `50puzzles.txt` with an algorithm timeout of 60 seconds by default. Make sure that file exists in the directory if you run this command.
-- To run another txt file that exists in the project directory, execute `python3 main.py -f <filename>` in your terminal
+- **IMPORTANT**: Doing this will run the algorithms on the file `50puzzles.txt` with an algorithm timeout of 60 seconds by default. Make sure that this file exists in the directory if you run this command.
+- To run another puzzle input txt file that exists in the project directory, execute `python3 main.py -f <filename>` in your terminal
 - To use a custom timeout for the algorithms, execute `python3 main.py -t <number of seconds>` in your terminal
 - After running the algorithms, 2 folders called `search_files` and `solution_files` are created in the project directory. They contain their respective
 output files.
@@ -29,10 +29,9 @@ output files.
 Additional Notes
 ---
 
-- If you wish to only run a specific algorithm with a certain heuristic, at the bottom of the file `main.py`, you can comment out or remove all the algorithms there by default
-and only include the one you wish to use
+- If you wish to only run specific algorithms with a certain heuristic, at the bottom of the file `main.py`, you can comment out or remove all the algorithms there by default and only include the one(s) that you wish to use
 
-Example, running A* with h1:
+Example, only running A* with h1:
 
 ```
 for i, puzzle in enumerate(puzzles):
