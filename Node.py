@@ -186,35 +186,51 @@ class Node:
       return 0
     return 1
 
-  # Heuristic 1 logic (hamming distance, although it seems like it is not admissible for this puzzle)
+  # Heuristic 1 logic (custom heuristic)
   def h1(self):
-    goal1_hd = 0
-    goal2_hd = 0
+    total_cost1 = 0
+    total_cost2 = 0
 
     for row in range(self.max_row + 1):
       for col in range(self.max_col + 1):
         if self.state[row][col] != Node.goal1[row][col]:
-          goal1_hd += 1
+          goal_r, goal_c = find(Node.goal1, self.state[row][col])
+          total_cost1 += getLowestCost(row, col, goal_r, goal_c)
         if self.state[row][col] != Node.goal2[row][col]:
-          goal2_hd += 1
-
-    return min(goal1_hd, goal2_hd)
-
-
-  # Heuristic 2 logic (custom heuristic, admissible)
+          goal_r, goal_c = find(Node.goal2, self.state[row][col])
+          total_cost2 += getLowestCost(row, col, goal_r, goal_c)
+          
+    return min(total_cost1,total_cost2)
+      
+  # Heuristic 2 logic (hamming distance + custom heuristic h1)
   def h2(self):
     goal1_hd = 0
     goal2_hd = 0
 
     for row in range(self.max_row + 1):
       for col in range(self.max_col + 1):
+        if(self.state[row][col] != 0):
+          if self.state[row][col] != Node.goal1[row][col]:
+            goal1_hd += 1
+          if self.state[row][col] != Node.goal2[row][col]:
+            goal2_hd += 1
 
-        if self.state[row][col] != Node.goal1[row][col]:
-          goal_r, goal_c = find(Node.goal1, self.state[row][col])
-          goal1_hd += getLowestCost(row, col, goal_r, goal_c)
+    if(goal1_hd < goal2_hd):
+      total_cost = 0
 
-        if self.state[row][col] != Node.goal2[row][col]:
-          goal_r, goal_c = find(Node.goal2, self.state[row][col])
-          goal2_hd += getLowestCost(row, col, goal_r, goal_c)
+      for row in range(self.max_row + 1):
+        for col in range(self.max_col + 1):
+          if self.state[row][col] != Node.goal1[row][col]:
+            goal_r, goal_c = find(Node.goal1, self.state[row][col])
+            total_cost += getLowestCost(row, col, goal_r, goal_c)
+      return total_cost
 
-    return min(goal1_hd, goal2_hd)
+    else:
+      total_cost = 0
+
+      for row in range(self.max_row + 1):
+        for col in range(self.max_col + 1):
+          if self.state[row][col] != Node.goal2[row][col]:
+            goal_r, goal_c = find(Node.goal2, self.state[row][col])
+            total_cost += getLowestCost(row, col, goal_r, goal_c)
+      return total_cost

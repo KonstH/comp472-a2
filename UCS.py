@@ -4,7 +4,8 @@ from utils import index
 
 def ucs(rootNode, timeout):
   open_list = PQ()
-  closed_list = []
+  closed_list = set()
+  search_path = []
   open_list.insert(0, rootNode)  # Add initial node with g(n) of 0
   start_time = perf_counter()    # Start the timer
   timedOut = False
@@ -19,18 +20,18 @@ def ucs(rootNode, timeout):
 
     else:
       currCost, node = open_list.pop()   # get node and its g(n)
-      clist_node_index = index(node.state, closed_list)
 
       # if node has not been visited yet, process it
-      if clist_node_index < 0:
-        closed_list.append(node)   # node is visited for the first time, add to closed list
+      if (str(node.state) not in closed_list):
+        closed_list.add(str(node.state))  # node is visited for the first time, add to closed list
+        search_path.append(node)
 
         # goal achieved, stop algorithm and return results
         if (node.isGoal(node.state)):
           moves, costs, sol_path = node.traceSolution([],[],[])
           totalCost = sum(costs)
           end_time = (elapsed_time - start_time)
-          return (moves, costs, sol_path, closed_list, totalCost, end_time, timedOut)   # Return final values
+          return (moves, costs, sol_path, search_path, totalCost, end_time, timedOut)   # Return final values
 
         # goal not achieved yet, generate next nodes and keep evaluating
         else:

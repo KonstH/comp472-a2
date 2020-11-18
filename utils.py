@@ -8,8 +8,7 @@ curr_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))
 
 
 """
-Function which captures puzzles from a given input file and returns them
-as an array
+Function which captures puzzles from a given input file and returns them as a list
 """
 def getPuzzles(file_name):
   with open(file_name) as f:
@@ -126,7 +125,7 @@ def generate50Puzzles():
 """
 Function which counts the total number of lines in all the files inside of the solution and search output directories
 """
-def getTotalLines():
+def getMetrics():
   solutions_dir = curr_dir + '/solution_files/'
   search_dir = curr_dir + '/search_files/'
   sols_total = 0
@@ -186,8 +185,10 @@ def index(item, lst):
 Function which returns the index of the specified value in a given list
 """
 def find(arr, value):
-  for row in range(2):
-    for col in range(4):
+  max_row = len(arr) - 1
+  max_col = len(arr[1]) - 1
+  for row in range(max_row+1):
+    for col in range(max_col+1):
       if arr[row][col] == value:
         return (row, col)
 
