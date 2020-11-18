@@ -124,6 +124,7 @@ def generate50Puzzles():
 
 """
 Function which counts the total number of lines in all the files inside of the solution and search output directories
+also outputs total cost and execution time of successful runs
 """
 def getMetrics():
   solutions_dir = curr_dir + '/solution_files/'

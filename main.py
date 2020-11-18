@@ -8,7 +8,7 @@ import argparse
 
 # Sets up the arguments that can be passed in the terminal
 parser = argparse.ArgumentParser(description="Solve the Chi-Puzzle(s) using different algorithms and heuristics")
-parser.add_argument('-f', '--filename', type=str, default='input.txt', metavar='', help="Name of input file (default: input.txt)")
+parser.add_argument('-f', '--filename', type=str, default='50puzzles.txt', metavar='', help="Name of input file (default: input.txt)")
 parser.add_argument('-t', '--timeout', type=int, default=60, metavar='', help="Timeout for algorithms (default: 60)")
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-del', '--delete', action="store_true", help="Delete outputs from previous run (default: False)")
