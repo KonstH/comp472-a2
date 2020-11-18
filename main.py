@@ -55,7 +55,8 @@ def solve(puzzle, puzzleCount, algo, heur, timeout):
 
   writeResults(sol_fname, srch_fname, search_outputs, timeout, algo)
 
-# Reads input file and stores puzzles in a list (Currently hardcoded to only accept 4x2 puzzles)
+# Reads input file and stores puzzles in a list (Only works for 2x4 puzzles)
+# Default file: 50puzzles.txt (you can pass another file as an argument or using the -f flag in the terminal)
 puzzles = getPuzzles(args.filename)
 
 # If -del flag is passed, old output folders and their contents are deleted
@@ -63,7 +64,7 @@ if(args.delete):
   clearOldOutputs()
 
 # Solves each puzzle and outputs results/metrics in text file.
-# The two last arguments passed to the solve function determine which algorithm and heuristic will be used.
+# The third and fourth arguments passed to the solve function determine which algorithm and heuristic will be used.
 # 
 # Algorithm options: UCS, GBFS, A*
 # Heuristic options: h0, h1, h2
