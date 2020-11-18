@@ -37,3 +37,5 @@ Example, only running A* with h1:
 for i, puzzle in enumerate(puzzles):
   solve(puzzle, i, 'A*', 'h1', args.timeout)
  ```
+ 
+ - After algorithms have finished executing and output files have been created, you can run the file `printMetrics.py` to print analytics of the output files in your terminal/console.
